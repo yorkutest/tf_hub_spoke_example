@@ -1,7 +1,6 @@
 locals {
-  prefix-hub-nva         = "hub-nva"
-  hub-nva-location       = var.location
-  hub-nva-resource-group = "hub-nva-rg"
+  prefix-hub-nva   = "hub-nva"
+  hub-nva-location = var.location
 }
 
 resource "azurerm_resource_group" "hub-nva-rg" {
