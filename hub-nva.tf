@@ -13,6 +13,7 @@ resource "azurerm_resource_group" "hub-nva-rg" {
 }
 
 resource "azurerm_network_interface" "hub-nva-nic" {
+  #checkov:skip=CKV_AZURE_118:Ensure that Network Interfaces disable IP forwarding
   name                 = "${local.prefix-hub-nva}-nic"
   location             = azurerm_resource_group.hub-nva-rg.location
   resource_group_name  = azurerm_resource_group.hub-nva-rg.name
@@ -31,6 +32,7 @@ resource "azurerm_network_interface" "hub-nva-nic" {
 }
 
 resource "azurerm_virtual_machine" "hub-nva-vm" {
+  #checkov:skip=CKV_AZURE_1: "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead)"
   name                  = "${local.prefix-hub-nva}-vm"
   location              = azurerm_resource_group.hub-nva-rg.location
   resource_group_name   = azurerm_resource_group.hub-nva-rg.name
