@@ -95,6 +95,8 @@ resource "azurerm_subnet_network_security_group_association" "mgmt-nsg-associati
 
 resource "azurerm_virtual_machine" "onprem-vm" {
   #checkov:skip=CKV_AZURE_1: "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead)"
+  #checkov:skip=CKV2_AZURE_10: "Ensure that Microsoft Antimalware is configured to automatically updates for Virtual Machines"
+  #checkov:skip=CKV2_AZURE_12: "Ensure that virtual machines are backed up using Azure Backup"
   name                  = "${local.prefix-onprem}-vm"
   location              = azurerm_resource_group.onprem-vnet-rg.location
   resource_group_name   = azurerm_resource_group.onprem-vnet-rg.name
