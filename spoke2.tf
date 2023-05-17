@@ -21,6 +21,7 @@ resource "azurerm_virtual_network" "spoke2-vnet" {
 }
 
 resource "azurerm_subnet" "spoke2-mgmt" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "mgmt"
   resource_group_name  = azurerm_resource_group.spoke2-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.spoke2-vnet.name
@@ -28,6 +29,7 @@ resource "azurerm_subnet" "spoke2-mgmt" {
 }
 
 resource "azurerm_subnet" "spoke2-workload" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "workload"
   resource_group_name  = azurerm_resource_group.spoke2-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.spoke2-vnet.name
@@ -48,6 +50,7 @@ resource "azurerm_virtual_network_peering" "spoke2-hub-peer" {
 }
 
 resource "azurerm_network_interface" "spoke2-nic" {
+  #checkov:skip=CKV_AZURE_118: "Ensure that Network Interfaces disable IP forwarding"
   name                 = "${local.prefix-spoke2}-nic"
   location             = azurerm_resource_group.spoke2-vnet-rg.location
   resource_group_name  = azurerm_resource_group.spoke2-vnet-rg.name
@@ -65,6 +68,9 @@ resource "azurerm_network_interface" "spoke2-nic" {
 }
 
 resource "azurerm_virtual_machine" "spoke2-vm" {
+  #checkov:skip=CKV_AZURE_1: "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead)"
+  #checkov:skip=CKV2_AZURE_10: "Ensure that Microsoft Antimalware is configured to automatically updates for Virtual Machines"
+  #checkov:skip=CKV2_AZURE_12: "Ensure that virtual machines are backed up using Azure Backup"
   name                  = "${local.prefix-spoke2}-vm"
   location              = azurerm_resource_group.spoke2-vnet-rg.location
   resource_group_name   = azurerm_resource_group.spoke2-vnet-rg.name

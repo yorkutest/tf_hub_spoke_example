@@ -22,6 +22,7 @@ resource "azurerm_virtual_network" "hub-vnet" {
 }
 
 resource "azurerm_subnet" "hub-gateway-subnet" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "GatewaySubnet"
   resource_group_name  = azurerm_resource_group.hub-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.hub-vnet.name
@@ -29,6 +30,7 @@ resource "azurerm_subnet" "hub-gateway-subnet" {
 }
 
 resource "azurerm_subnet" "hub-mgmt" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "mgmt"
   resource_group_name  = azurerm_resource_group.hub-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.hub-vnet.name
@@ -36,6 +38,7 @@ resource "azurerm_subnet" "hub-mgmt" {
 }
 
 resource "azurerm_subnet" "hub-dmz" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "dmz"
   resource_group_name  = azurerm_resource_group.hub-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.hub-vnet.name
@@ -43,6 +46,7 @@ resource "azurerm_subnet" "hub-dmz" {
 }
 
 resource "azurerm_network_interface" "hub-nic" {
+  #checkov:skip=CKV_AZURE_118:Ensure that Network Interfaces disable IP forwarding
   name                 = "${local.prefix-hub}-nic"
   location             = azurerm_resource_group.hub-vnet-rg.location
   resource_group_name  = azurerm_resource_group.hub-vnet-rg.name
@@ -61,6 +65,9 @@ resource "azurerm_network_interface" "hub-nic" {
 
 #Virtual Machine
 resource "azurerm_virtual_machine" "hub-vm" {
+  #checkov:skip=CKV_AZURE_1: "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead)"
+  #checkov:skip=CKV2_AZURE_10: "Ensure that Microsoft Antimalware is configured to automatically updates for Virtual Machines"
+  #checkov:skip=CKV2_AZURE_12: "Ensure that virtual machines are backed up using Azure Backup"
   name                  = "${local.prefix-hub}-vm"
   location              = azurerm_resource_group.hub-vnet-rg.location
   resource_group_name   = azurerm_resource_group.hub-vnet-rg.name

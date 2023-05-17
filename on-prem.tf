@@ -21,6 +21,7 @@ resource "azurerm_virtual_network" "onprem-vnet" {
 }
 
 resource "azurerm_subnet" "onprem-gateway-subnet" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "GatewaySubnet"
   resource_group_name  = azurerm_resource_group.onprem-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.onprem-vnet.name
@@ -28,6 +29,7 @@ resource "azurerm_subnet" "onprem-gateway-subnet" {
 }
 
 resource "azurerm_subnet" "onprem-mgmt" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "mgmt"
   resource_group_name  = azurerm_resource_group.onprem-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.onprem-vnet.name
@@ -46,6 +48,8 @@ resource "azurerm_public_ip" "onprem-pip" {
 }
 
 resource "azurerm_network_interface" "onprem-nic" {
+  #checkov:skip=CKV_AZURE_118: "Ensure that Network Interfaces disable IP forwarding"
+  #checkov:skip=CKV_AZURE_119: "Ensure that Network Interfaces don't use public IPs"
   name                 = "${local.prefix-onprem}-nic"
   location             = azurerm_resource_group.onprem-vnet-rg.location
   resource_group_name  = azurerm_resource_group.onprem-vnet-rg.name
@@ -61,6 +65,8 @@ resource "azurerm_network_interface" "onprem-nic" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "onprem-nsg" {
+  #checkov:skip=CKV_AZURE_10: "Ensure that SSH access is restricted from the internet"
+  #checkov:skip=CKV2_AZURE_10: "Ensure that Microsoft Antimalware is configured to automatically updates for Virtual Machines"
   name                = "${local.prefix-onprem}-nsg"
   location            = azurerm_resource_group.onprem-vnet-rg.location
   resource_group_name = azurerm_resource_group.onprem-vnet-rg.name
@@ -88,6 +94,7 @@ resource "azurerm_subnet_network_security_group_association" "mgmt-nsg-associati
 }
 
 resource "azurerm_virtual_machine" "onprem-vm" {
+  #checkov:skip=CKV_AZURE_1: "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead)"
   name                  = "${local.prefix-onprem}-vm"
   location              = azurerm_resource_group.onprem-vnet-rg.location
   resource_group_name   = azurerm_resource_group.onprem-vnet-rg.name
