@@ -1,0 +1,18 @@
+name: 'Terraform Configuration Drift Detection'
+
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '41 3 * * *' # runs nightly at 3:41 am
+
+jobs:
+  call-workflow:
+    name: 'Terraform Configuration Drift Detection'
+    permissions:
+        issues: write
+    uses: yorkutest/templates/.github/workflows/tf-drift.yml@main
+    with:
+      storage-key: terraform.tfstate
+      storage-account-info: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}

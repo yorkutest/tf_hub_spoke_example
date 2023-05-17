@@ -1,0 +1,14 @@
+name: 'Terraform Plan/Apply'
+
+on:
+  push:
+
+jobs:
+  call-workflow:
+    name: 'Terraform Plan/Apply'
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply.yml@main
+    with:
+      storage-key: terraform.tfstate
+      storage-account-info: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}

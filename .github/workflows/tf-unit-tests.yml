@@ -1,0 +1,9 @@
+name: 'Terraform Unit Tests'
+
+on:
+  push:
+
+jobs:
+  call-workflow:
+    name: 'Terraform Unit Tests'
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@main
