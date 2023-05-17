@@ -10,7 +10,7 @@ jobs:
     name: 'Terraform Configuration Drift Detection'
     permissions:
         issues: write
-    uses: yorkutest/templates/.github/workflows/tf-drift.yml@main
+    uses: yorkutest/templates/.github/workflows/tf-drift.yml@maxtest
     with:
       storage-key: terraform.tfstate
       storage-account-info: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}

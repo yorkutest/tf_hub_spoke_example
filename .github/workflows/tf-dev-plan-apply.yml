@@ -1,23 +1,23 @@
-name: 'Terraform Unit Tests'
+name: 'Terraform Dev Deploy'
 
 on:
   push:
-    branches-ignore:
-      - 'main'
-      - 'release/*'
-
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
-    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@v0.2
-  dev-plan:
-    name: 'Terraform Dev Plan'
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.3
+
+  deploy_dev:
+    name: 'Deploy to development'
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.3
     needs: [unit-tests]
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@v0.2
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
-      deploymentType: 'Plan'
+      deploymentType: 'Create'
       commandOptions: '-var-file=variables/development.tfvars'
       storageKey: 'hubspoke/dev/hub_spoke.tfstate'
       target-env: development

@@ -1,14 +1,37 @@
-name: 'Terraform Plan/Apply'
+name: 'Terraform Stage and Prod Deployment'
 
 on:
   push:
+    tags:
+       - 'release/*'
 
 jobs:
-  call-workflow:
-    name: 'Terraform Plan/Apply'
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply.yml@main
+  unit-tests:
+    name: 'Terraform Unit Tests'
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.3
+
+  deploy_stage:
+    name: 'Deploy to staging'
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.3
+    needs: [unit-tests]
     with:
-      storage-key: terraform.tfstate
-      storage-account-info: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
+      storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
+      deploymentType: 'Create'
+      commandOptions: '-var-file=variables/stage.tfvars'
+      storageKey: 'projectName/stage/test_rg.tfstate'
+      target-env: stage
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy_production:
+    name: 'Deploy to production'
+    needs: deploy_stage
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.3
+    with:
+      storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
+      deploymentType: 'Create'
+      commandOptions: '-var-file=variables/production.tfvars'
+      storageKey: 'projectName/production/test_rg.tfstate'
+      target-env: production
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
