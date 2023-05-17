@@ -3,20 +3,20 @@ variable "subscriptionId" {
 }
 
 variable "location" {
-    description = "Location of the network"
-    default     = "canadacentral"
+  description = "Location of the network"
+  default     = "canadacentral"
 }
 
 variable "username" {
-    description = "Username for Virtual Machines"
-    default     = "azureuser"
+  description = "Username for Virtual Machines"
+  default     = "azureuser"
 }
 
 variable "password" {
-    description = "Password for Virtual Machines"
+  description = "Password for Virtual Machines"
 }
 
 variable "vmsize" {
-    description = "Size of the VMs"
-    default     = "Standard_B2s"
+  description = "Size of the VMs"
+  default     = "Standard_B2s"
 }
