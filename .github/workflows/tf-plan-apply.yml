@@ -5,6 +5,10 @@ on:
     tags:
        - 'release/*'
 
+permissions:
+ id-token: write
+ contents: read
+      
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
