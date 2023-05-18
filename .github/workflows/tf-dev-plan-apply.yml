@@ -9,18 +9,18 @@ on:
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
-    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.4
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.5
 
   deploy_dev:
     name: 'Deploy to development'
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.4
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.5
     needs: [unit-tests]
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
       deploymentType: 'Create'
       commandOptions: '-var-file=variables/development.tfvars'
       storageKey: 'hubspoke/dev/hub_spoke.tfstate'
-      target-env: development
+      targetEnv: development
     secrets: inherit
 #      token: ${{ secrets.GITHUB_TOKEN }}
 

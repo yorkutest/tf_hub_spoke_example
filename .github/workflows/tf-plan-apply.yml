@@ -8,30 +8,30 @@ on:
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
-    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.4
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.5
 
   deploy_stage:
     name: 'Deploy to staging'
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.4
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.5
     needs: [unit-tests]
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
       deploymentType: 'Create'
       commandOptions: '-var-file=variables/stage.tfvars'
       storageKey: 'projectName/stage/test_rg.tfstate'
-      target-env: stage
+      targetEnv: stage
     secrets: inherit
 #      token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_production:
     name: 'Deploy to production'
     needs: deploy_stage
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.4
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.5
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
       deploymentType: 'Create'
       commandOptions: '-var-file=variables/production.tfvars'
       storageKey: 'projectName/production/test_rg.tfstate'
-      target-env: production
+      targetEnv: production
     secrets: inherit
 #      token: ${{ secrets.GITHUB_TOKEN }}
