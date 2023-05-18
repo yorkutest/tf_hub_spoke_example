@@ -12,11 +12,11 @@ permissions:
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
-    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.6
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.7
 
   deploy_stage:
     name: 'Deploy to staging'
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.6
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.7
     needs: [unit-tests]
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
@@ -30,7 +30,7 @@ jobs:
   deploy_production:
     name: 'Deploy to production'
     needs: deploy_stage
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.6
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.7
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
       deploymentType: 'Create'

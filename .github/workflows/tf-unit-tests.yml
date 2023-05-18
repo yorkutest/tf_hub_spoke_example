@@ -13,11 +13,11 @@ permissions:
 jobs:
   unit-tests:
     name: 'Terraform Unit Tests'
-    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.6
+    uses: yorkutest/templates/.github/workflows/tf-unit-tests.yml@release/v0.7
   dev-plan:
     name: 'Terraform Dev Plan'
     needs: [unit-tests]
-    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.6
+    uses: yorkutest/templates/.github/workflows/tf-plan-apply_env.yml@release/v0.7
     with:
       storageAccountInfo: ${{ vars.TF_STORAGE_ACCOUNT_INFO }}
       deploymentType: 'Plan'
