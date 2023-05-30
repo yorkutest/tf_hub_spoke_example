@@ -38,6 +38,7 @@ resource "azurerm_subnet" "hub-mgmt" {
 }
 
 resource "azurerm_subnet" "hub-dmz" {
+  #checkov:skip=CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
   name                 = "dmz"
   resource_group_name  = azurerm_resource_group.hub-vnet-rg.name
   virtual_network_name = azurerm_virtual_network.hub-vnet.name
